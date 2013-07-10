@@ -263,13 +263,13 @@ class Debugger
      * Breaks all threads except the debugger thread (which should be the same
      * as the calling thread!).
      *
-     * Waits up to 2 seconds for all threads to be broken.  Threads which are
-     * in blocking system calls and cannot break after 2 seconds remain
-     * running when this function returns.
+     * If [wait] is true, waits up to 2 seconds for all threads to be broken.
+     * Threads which are in blocking system calls and cannot break after 2
+     * seconds remain running when this function returns.
      **/
-    public static function breakNow()
+    public static function breakNow(wait : Bool = true)
     {
-        untyped __global__.__hxcpp_dbg_breakNow();
+        untyped __global__.__hxcpp_dbg_breakNow(wait);
     }
     
     /**
