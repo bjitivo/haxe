@@ -214,11 +214,13 @@ class Debugger
     /**
      * Returns a ThreadInfo object describing a single thread, or null if
      * there is no such thread or the thread queried about was the debugger
-     * thread.
+     * thread and unsafe was not true.
      **/
-    public static function getThreadInfo(threadNumber : Int) : ThreadInfo
+    public static function getThreadInfo(threadNumber : Int,
+                                         unsafe : Bool) : ThreadInfo
     {
-        return untyped __global__.__hxcpp_dbg_getThreadInfo(threadNumber);
+        return untyped __global__.__hxcpp_dbg_getThreadInfo
+            (threadNumber, unsafe);
     }
     
     /**
@@ -300,47 +302,51 @@ class Debugger
      * given stack frame.
      *
      * Returns a list with a single entry, THREAD_NOT_STOPPED, if the
-     * thread is not stopped and thus variables cannot be fetched.
+     * thread is not stopped and thus variables cannot be fetched and
+     * unsafe is not true.
      *
      * @return the list of local variables (including "this", function
      *         arguments, and local variables) visible to the given thread at
      *         the given stack frame.
      **/
     public static function getStackVariables(threadNumber : Int,
-                                        stackFrameNumber : Int) : Array<String>
+                                             stackFrameNumber : Int,
+                                             unsafe : Bool) : Array<String>
     {
         return untyped __global__.__hxcpp_dbg_getStackVariables
-            (threadNumber, stackFrameNumber, THREAD_NOT_STOPPED);
+            (threadNumber, stackFrameNumber, unsafe, THREAD_NOT_STOPPED);
     }
 
     /**
      * Returns the value of a stack variable, or NONEXISTENT_VALUE if the
-     * requested value does not exist.  If the thread is actively running,
-     * returns THREAD_NOT_STOPPED.
+     * requested value does not exist.  If the thread is actively running
+     * and unsafe is not true, returns THREAD_NOT_STOPPED.
      **/
     public static function getStackVariableValue(threadNumber : Int, 
                                                  stackFrameNumber : Int,
-                                                 name : String) : Dynamic
+                                                 name : String,
+                                                 unsafe : Bool) : Dynamic
     {
         return untyped __global__.__hxcpp_dbg_getStackVariableValue
-            (threadNumber, stackFrameNumber, name, NONEXISTENT_VALUE,
+            (threadNumber, stackFrameNumber, name, unsafe, NONEXISTENT_VALUE,
              THREAD_NOT_STOPPED);
     }
 
     /**
      * Sets the value of a stack variable and returns that value.  If the
      * variable does not exist, on the stack, this function returns
-     * NONEXISTENT_VALUE.  If the thread is actively running, returns
-     * THREAD_NOT_STOPPED, and the value is not set.
+     * NONEXISTENT_VALUE.  If the thread is actively running and unsafe is not
+     * true, returns THREAD_NOT_STOPPED, and the value is not set.
      **/
     public static function setStackVariableValue(threadNumber : Int,
                                                  stackFrameNumber : Int,
                                                  name : String,
-                                                 value : Dynamic) : Dynamic
+                                                 value : Dynamic,
+                                                 unsafe : Bool) : Dynamic
     {
         return untyped __global__.__hxcpp_dbg_setStackVariableValue
-            (threadNumber, stackFrameNumber, name, value, NONEXISTENT_VALUE,
-             THREAD_NOT_STOPPED);
+            (threadNumber, stackFrameNumber, name, value, unsafe,
+             NONEXISTENT_VALUE, THREAD_NOT_STOPPED);
     }
 
     // The hxcpp runtime calls back through these functions to create Haxe
