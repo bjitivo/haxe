@@ -353,7 +353,7 @@ class Debugger
     // objects as needed, which allows the C++ implementation code to create
     // Haxe objects without having to actually know the structure of those
     // objects
-    private static var __Debugger_initializer__ : String =
+    private static function __init__()
     {
         untyped __global__.__hxcpp_dbg_setNewParameterFunction
         (
@@ -398,6 +398,5 @@ class Debugger
              threadInfo.stack.push(stackFrame);
          }
         );
-        null;
     }
 }
