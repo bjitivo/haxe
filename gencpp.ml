@@ -1130,7 +1130,7 @@ let hx_stack_push ctx output clazz func_name pos =
    let qfile = "\"" ^ (Ast.s_escape stripped_file) ^ "\"" in
 	ctx.ctx_file_info := PMap.add qfile qfile !(ctx.ctx_file_info);
 	if (ctx.ctx_dump_stack_line) then
-		output ("HX_STACK_PUSH(\"" ^ clazz ^ "\",\"" ^ func_name ^ "\",\"" ^ 
+		output ("HX_STACK_FRAME(\"" ^ clazz ^ "\",\"" ^ func_name ^ "\",\"" ^ 
                 clazz ^ "." ^ func_name ^ "\"," ^ qfile ^ "," ^
 			    (string_of_int (Lexer.get_error_line pos) ) ^ ")\n")
 ;;
@@ -2489,14 +2489,17 @@ let generate_files common_ctx file_info =
     let types = common_ctx.types in
 	output_files "#include <hxcpp.h>\n\n";
 	output_files "namespace hx {\n";
+    (* Include class names in the __hxcpp_all_files array, at the end. *)
+    (* This is to enable backwards compatibility of new hxcpp with old *)
+    (* haxe compilers.  A new symbol cannot be introduced here and *)
+    (* depended upon by new hxcpp because it won't be present in code *)
+    (* emitted by the old compiler.  So this rather than introducing a new *)
+    (* array, just glom onto the old in a way that is detectable by the *)
+    (* new hxcpp implementation. *)
 	output_files "const char *__hxcpp_all_files[] = {\n";
 	output_files "#ifdef HXCPP_DEBUGGER\n";
 	List.iter ( fun file -> output_files ("	" ^ file ^ ",\n" ) ) ( List.sort String.compare ( pmap_keys !file_info) );
-	output_files "#endif\n";
-	output_files " 0 };\n";
-    output_files "\n";
-    output_files "const char *__hxcpp_all_classes[] = {\n";
-	output_files "#ifdef HXCPP_DEBUGGER\n";
+    output_files "    \"@@@ CLASSES FOLLOW @@@\",\n";
     List.iter ( fun object_def ->
                 (match object_def with
 		         | TClassDecl class_def when class_def.cl_extern -> ( )
