@@ -160,7 +160,8 @@ let make_path f =
 		| _ -> cl
 	) in
 	let error() =
-		let msg =
+		let msg = "Could not process argument " ^ f in
+		let msg = msg ^ "\n" ^
 			if String.length f == 0 then
 				"Class name must not be empty"
 			else match (List.hd (List.rev cl)).[0] with
@@ -725,7 +726,7 @@ and wait_loop boot_com host port =
 		Unix.close sin;
 		(* prevent too much fragmentation by doing some compactions every X run *)
 		incr run_count;
-		if !run_count mod 1 = 50 then begin
+		if !run_count mod 10 = 0 then begin
 			let t0 = get_time() in
 			Gc.compact();
 			if verbose then begin

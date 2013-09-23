@@ -41,37 +41,130 @@ enum Constant {
 }
 
 enum Binop {
+	/**
+		`+`
+	**/
 	OpAdd;
+	/**
+		`*`
+	**/
 	OpMult;
+	/**
+		`/`
+	**/
 	OpDiv;
+	/**
+		`-`
+	**/
 	OpSub;
+	/**
+		`=`
+	**/
 	OpAssign;
+	/**
+		`==`
+	**/
 	OpEq;
+	/**
+		`!=`
+	**/
 	OpNotEq;
+	/**
+		`>`
+	**/
 	OpGt;
+	/**
+		`>=`
+	**/
 	OpGte;
+	/**
+		`<`
+	**/
 	OpLt;
+	/**
+		`<=`
+	**/
 	OpLte;
+	/**
+		`&`
+	**/
 	OpAnd;
+	/**
+		`|`
+	**/
 	OpOr;
+	/**
+		`^`
+	**/
 	OpXor;
+	/**
+		`&&`
+	**/
 	OpBoolAnd;
+	/**
+		`||`
+	**/
 	OpBoolOr;
+	/**
+		`<<`
+	**/
 	OpShl;
+	/**
+		`>>`
+	**/
 	OpShr;
+	/**
+		`>>>`
+	**/
 	OpUShr;
+	/**
+		`%`
+	**/
 	OpMod;
+	/**
+		`+=`
+		`-=`
+		`/=`
+		`*=`
+		`<<=`
+		`>>=`
+		`>>>=`
+		`|=`
+		`&=`
+		`^=`
+	**/
 	OpAssignOp( op : Binop );
+	/**
+		`...`
+	**/
 	OpInterval;
+	/**
+		`=>`
+	**/
 	OpArrow;
 }
 
 
 enum Unop {
+	/**
+		`++`
+	**/
 	OpIncrement;
+	/**
+		`--`
+	**/
 	OpDecrement;
+	/**
+		`!`
+	**/
 	OpNot;
+	/**
+		`-`
+	**/
 	OpNeg;
+	/**
+		`~`
+	**/
 	OpNegBits;
 }
 
@@ -129,7 +222,7 @@ enum ExprDef {
 	EDisplay( e : Expr, isCall : Bool );
 	EDisplayNew( t : TypePath );
 	ETernary( econd : Expr, eif : Expr, eelse : Expr );
-	ECheckType( e : Expr, t : ComplexType, ?message : Null<String> );
+	ECheckType( e : Expr, t : ComplexType );
 	EMeta( s : MetadataEntry, e : Expr );
 }
 
